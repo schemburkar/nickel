@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+
+ <g>
+  <circle  transform="scale(2.2)" cx="14" cy="14" r="14" stroke="#000" xml:space="preserve" y="0" x="0" stroke-width="0" fill="#000000"  />
+  <text transform="scale(2.2)"  xml:space="preserve" text-anchor="start" font-family="'Segoe UI'" font-size="28" y="21" x="6.5" stroke-width="0.5" stroke-opacity="0.8" stroke="#fff" fill="#111">n</text>
+ </g>
+</svg>

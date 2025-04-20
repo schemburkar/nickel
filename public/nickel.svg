@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+
+ <g>
+  <title>Layer 1</title>
+  <text style="cursor: move;" transform="matrix(8.58864 0 0 8.58864 -855.999 -1476.57)" stroke="#000" xml:space="preserve" text-anchor="start" font-family="'Fira Code'" font-size="24" id="svg_1" y="215.65069" x="102.55389" stroke-width="0" fill="#000000">nic</text>
+  <text transform="matrix(8.4637 0 0 8.82125 -2888.61 -620.859)" stroke="#000" xml:space="preserve" text-anchor="start" font-family="'Fira Code'" font-size="24" id="svg_3" y="113.507" x="375.68289" stroke-width="0" fill="#000000">₹</text>
+  
+  <text transform="matrix(8.58864 0 0 8.58864 -855.999 -1476.57)" stroke="#000" xml:space="preserve" text-anchor="start" font-family="'Fira Code'" font-size="24" id="svg_5" y="215.65069" x="144.58615" stroke-width="0" fill="#000000">el</text>
+ </g>
+</svg>
