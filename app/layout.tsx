@@ -1,17 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Nav } from "./(nav)/nav";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "zero nickels - Tools to save optimize spends, tax and more",
@@ -41,7 +32,7 @@ export default function RootLayout({
       {/* <link rel="icon" type="image/svg+xml" sizes="45x45" href="/favicon.svg?<generated>" /> */}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
+        className={` antialiased `}
       >
         <Nav />
         {children}

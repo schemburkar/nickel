@@ -20,7 +20,7 @@ export const Nav = () => {
                                         <NavigationMenuLink asChild>
                                             <Link
                                                 className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                                                href="/"
+                                                href="/mutual-fund/portfolio"
                                             >
                                                 {/* <Icons.logo className="h-6 w-6" /> */}
                                                 <div className="mb-2 mt-4 text-lg font-medium">
@@ -69,7 +69,7 @@ export const Nav = () => {
                                     <ListItem href="/home-loan/payment-schedule" title="Payment schedule">
                                         Know how much interest you pay every month
                                     </ListItem>
-                                    <ListItem href="/home-loan/payment-schedule-od" title="Compare with OD account">
+                                    <ListItem href="/home-loan/payment-schedule-od" title="Compare with OD/Max Gain account">
                                         How your loan reduces with OD account like &quot;Max Gain&quot;
                                     </ListItem>
                                 </ul>
