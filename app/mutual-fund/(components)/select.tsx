@@ -49,9 +49,9 @@ export function Select({ source, value, onSelect, placeholder, className, emptyC
     return (
         <Popover open={open} onOpenChange={setOpen} >
             <PopoverTrigger asChild>
-                <Button variant="outline" role="combobox" aria-expanded={open} className={cn("w-[200px] justify-between", className)}                >
+                <Button variant="outline" role="combobox" aria-expanded={open} className={cn(" justify-between", className)}                >
                     {value
-                        ? source.find((item) => item.value === value)?.label
+                        ? <span className="overflow-x-hidden">{source.find((item) => item.value === value)?.label}</span>
                         : (placeholder || "Select...")}
                     {/* <i>{value}</i> */}
                     <ChevronsUpDown className="opacity-50" />

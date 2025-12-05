@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Result, evaluate, SIP } from "@/lib/fund/valuation";
 import { Label } from "@/components/ui/label";
 import { subYears } from "date-fns";
-import { Icons } from "../../../components/icons";
+import { Icons } from "@/components/icons";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Shim } from "@/app/itr/selector/Shim";
+import { Shim } from "@app/itr/selector/Shim";
 import { Row } from "../(components)/Row";
 import { XIRR } from "../(components)/XIRR";
 import {
@@ -28,7 +28,7 @@ type SIPModel = SIP & {
     id: number
 }
 const defaultFund: FundModel = { schemeId: '', schemeName: '', sip: [{ id: new Date().getTime(), Amount: 5000, Date: subYears(new Date(), 1), Months: 12 }] };
-export const PortfolioView = ({ json }: { json: string }) => {
+export const PortfolioView = ({ json, baseUrl }: { json: string, baseUrl:string }) => {
     const [funds, setFunds] = useState<FundModel[]>([])
     const [results, setResults] = useState<(Promise<Result> | null)[]>([])
 
@@ -56,7 +56,7 @@ export const PortfolioView = ({ json }: { json: string }) => {
                 var results = [];
                 for (const fund of funds) {
                     console.log({ fund })
-                    const result = fund.schemeId ? evaluate(fund) : null;
+                    const result = fund.schemeId ? evaluate(fund, baseUrl) : null;
                     results.push(result);
                 }
 
@@ -181,13 +181,13 @@ const Fund = ({ jsondata, data, onUpdate,close }: FundProps) => {
 
             <Label>SIP Details</Label>
 
-            <Table>
+            <Table className="lg:max-w-140">
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="text-right w-1/4">SIP Amount</TableHead>
-                        <TableHead className="w-1/4">Date</TableHead>
-                        <TableHead className="text-right  w-1/4">No of Months</TableHead>
-                        <TableHead className="w-1/4 text-right">   </TableHead>
+                    <TableHead className="whitespace-normal text-right w-14">SIP Amount</TableHead>
+                        <TableHead className="w-8 whitespace-normal"> Date</TableHead>
+                        <TableHead className="text-right w-20 whitespace-normal">Months</TableHead>
+                        <TableHead className="w-32 text-right"></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

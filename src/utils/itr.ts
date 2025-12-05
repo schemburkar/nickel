@@ -5,8 +5,8 @@ export const computeTax = (input: TaxParams): TaxComputeResult => {
 
 const tax_25_26 = (input: TaxParams): TaxComputeResult => {
 
-    const taxableIncomeOldRegime = input.income - (input.deductions?.section10 || 0) - (input.deductions?.section24 || 0) - (input.deductions?.section80C || 0) - (input.deductions?.section80CCD1B || 0) - (input.deductions?.section80CCD2 || 0) - (input.deductions?.section80D || 0) - (input.deductions?.section80DDB || 0) - (input.deductions?.section80TTA || 0) + (input?.additionalIncome || 0) - 52400;
-    const taxableIncomeNewRegime = input.income - (input.deductions?.section80CCD2 || 0) + (input.additionalIncome || 0) - 75000;
+    const taxableIncomeOldRegime = Math.max(0,input.income - (input.deductions?.section10 || 0) - (input.deductions?.section24 || 0) - (input.deductions?.section80C || 0) - (input.deductions?.section80CCD1B || 0) - (input.deductions?.section80CCD2 || 0) - (input.deductions?.section80D || 0) - (input.deductions?.section80DDB || 0) - (input.deductions?.section80TTA || 0) + (input?.additionalIncome || 0) - 52400);
+    const taxableIncomeNewRegime = Math.max(0,input.income - (input.deductions?.section80CCD2 || 0) + (input.additionalIncome || 0) - 75000);
 
     const old_Tax = taxableIncomeOldRegime > 1000000 ? (taxableIncomeOldRegime - 1000000) * 0.30 + 112500 :
         taxableIncomeOldRegime > 500000 ? (taxableIncomeOldRegime - 500000) * 0.20 + 12500 :

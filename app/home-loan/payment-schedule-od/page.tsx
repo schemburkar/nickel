@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { ReactNode, memo, useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -9,10 +9,13 @@ import { calculateAmortization, getMapValue } from "../payment-schedule/calculat
 import { Schedule, ScheduleItem } from "../payment-schedule/Schedule";
 import { getSummaryRows } from "../payment-schedule/getSummaryRows";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ContextMenu } from "@/components/ui/context-menu";
+import { ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 
 const intl = new Intl.NumberFormat("en-IN", { style: 'currency', currency: 'INR', })
 
 export default function LoanCalculator() {
+  const [rows, setRows] = useState<number>(0);
   const [loanAmount, setLoanAmount] = useState<number>(0);
   const [tenure, setTenure] = useState<number>(0);
   const [interestRate, setInterestRate] = useState<number>(0);
@@ -30,47 +33,55 @@ export default function LoanCalculator() {
 
 
 
+  const handleInputChange = useCallback((type: 'Prepayment' | 'OD' | 'AdditionalEMI' | 'InterestRate' | 'InterestRateOD', index: number, value: number, copy?: undefined | true) => {
 
-  const handleInputChange = useCallback((type: 'Prepayment' | 'OD' | 'AdditionalEMI' | 'InterestRate' | 'InterestRateOD', index: number, value: number) => {
+
+    const loop = ((inp: Map<number, number>, value: number) => {
+      for (let i = index; copy ? (i < rows) : (i <= index); i++) {
+        inp.set(i, value)
+      }
+      return inp;
+    });
+
     if (type === "Prepayment") {
-      setInputsPrepayment(new Map<number, number>(inputsPrepayment.set(index, value)));
+      setInputsPrepayment(new Map<number, number>(loop(inputsPrepayment, value)));
       if (useSharedInputPrepaymentOD) {
-        setInputsOD(new Map<number, number>(inputsOD.set(index, value)));
+        setInputsOD(new Map<number, number>(loop(inputsOD, value)));
       }
     }
 
     if (type === "OD") {
       setInputsOD(new Map<number, number>(inputsOD.set(index, value)));
       if (useSharedInputPrepaymentOD) {
-        setInputsPrepayment(new Map<number, number>(inputsPrepayment.set(index, value)));
+        setInputsPrepayment(new Map<number, number>(loop(inputsPrepayment, value)));
       }
     }
 
     if (type === "AdditionalEMI") {
-      setInputsAdditionalEMI(new Map<number, number>(inputsAdditionalEMI.set(index, value)));
+      setInputsAdditionalEMI(new Map<number, number>(loop(inputsAdditionalEMI, value)));
     }
 
     if (type === "InterestRate") {
-      setInputsInterestRate(new Map<number, number>(inputsInterestRate.set(index, value)));
+      setInputsInterestRate(new Map<number, number>(loop(inputsInterestRate, value)));
       if (!useDifferentInterestRateOD) {
-        setInputsInterestRateOD(new Map<number, number>(inputsInterestRateOD.set(index, value)));
+        setInputsInterestRateOD(new Map<number, number>(loop(inputsInterestRateOD, value)));
       }
     }
 
     if (type === "InterestRateOD") {
-      setInputsInterestRateOD(new Map<number, number>(inputsInterestRateOD.set(index, value)));
+      setInputsInterestRateOD(new Map<number, number>(loop(inputsInterestRateOD, value)));
     }
-  }, []);
+  }, [useSharedInputPrepaymentOD, rows]);
 
   useLayoutEffect(() => {
-    const itrJSON = global.localStorage?.getItem('portfolio-od');
+    const itrJSON = null;//global.localStorage?.getItem('portfolio-od');
     const value = itrJSON ? JSON.parse(itrJSON) : null;
 
 
-    setLoanAmount(value?.loanAmount || 200000);
-    setTenure(value?.tenure || 24);
+    setLoanAmount(value?.loanAmount || 2000000);
+    setTenure(value?.tenure || 240);
     setInterestRate(value?.interestRate || 8);
-    setInterestRateOD(value?.interestRateOD || 8);
+    setInterestRateOD(value?.interestRateOD || 8.15);
 
     if (value) {
       if (value.inputsPrepayment) setInputsPrepayment(new Map<number, number>(value.inputsPrepayment));
@@ -89,32 +100,41 @@ export default function LoanCalculator() {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
 
-    if (global.localStorage) {
-      global.localStorage.setItem('portfolio-od', JSON.stringify({
-        loanAmount, tenure, interestRate, interestRateOD,
-        inputsPrepayment: [...inputsPrepayment.entries()],
-        inputsOD: [...inputsOD.entries()],
-        inputsAdditionalEMI: [...inputsAdditionalEMI.entries()],
-        inputsInterestRate: [...inputsInterestRate.entries()],
-        inputsInterestRateOD: [...inputsInterestRateOD.entries()],
-        useDifferentInterestRateOD,
-        useSharedInputPrepaymentOD
-      }))
-    }
+  //   if (global.localStorage) {
+  //     global.localStorage.setItem('portfolio-od', JSON.stringify({
+  //       loanAmount, tenure, interestRate, interestRateOD,
+  //       inputsPrepayment: [...inputsPrepayment.entries()],
+  //       inputsOD: [...inputsOD.entries()],
+  //       inputsAdditionalEMI: [...inputsAdditionalEMI.entries()],
+  //       inputsInterestRate: [...inputsInterestRate.entries()],
+  //       inputsInterestRateOD: [...inputsInterestRateOD.entries()],
+  //       useDifferentInterestRateOD,
+  //       useSharedInputPrepaymentOD
+  //     }))
+  //   }
 
-  }, [loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsOD, inputsAdditionalEMI, inputsInterestRate, inputsInterestRateOD, useDifferentInterestRateOD, useSharedInputPrepaymentOD]);
+  // }, [loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsOD, inputsAdditionalEMI, inputsInterestRate, inputsInterestRateOD, useDifferentInterestRateOD, useSharedInputPrepaymentOD]);
 
 
   const schedules = useMemo(() => calculateAmortization(loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsOD, inputsAdditionalEMI, inputsInterestRate, inputsInterestRateOD), [
     loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsOD, inputsAdditionalEMI, inputsInterestRate, inputsInterestRateOD
   ]);
 
+  const l = schedules.length;
+  const updateRows = useEffectEvent(() => {
+    setRows(l);
+  });
+
+  useEffect(() => {
+    updateRows();
+  }, [l]);
+
   return (<div className="flex flex-col  items-center  print:items-start">
     <section className="m-4 w-4/5 print:hidden">
-      <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+      <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
         href="/itr/selector">
         <div className="mb-2 mt-4 text-lg font-medium">
           Mutual Fund - Portfolio
@@ -160,7 +180,7 @@ export default function LoanCalculator() {
               </TableCell>
             </TableRow>
             <TableRow>
-              
+
               <TableCell colSpan={4} className="whitespace-normal">
                 <div className="flex items-center gap-2  ">
                   <Switch className="" checked={useDifferentInterestRateOD} onCheckedChange={() => setUseDifferentInterestRateOD(!useDifferentInterestRateOD)} />
@@ -177,7 +197,6 @@ export default function LoanCalculator() {
 
       <Summary schedules={schedules} />
 
-
       <section className="flex flex-col gap-2 ">
         <Label className="font-semibold mb-2">Amortization Table (Combined)</Label>
 
@@ -190,10 +209,10 @@ export default function LoanCalculator() {
               <TabsTrigger value="prepayment">Prepayment</TabsTrigger>
               <TabsTrigger value="od">OD</TabsTrigger>
             </TabsList>
-              <div className="flex items-center gap-2 self-end h-9 w-full justify-end">
-                <Switch checked={useSharedInputPrepaymentOD} onCheckedChange={() => setUseSharedInputPrepaymentOD(!useSharedInputPrepaymentOD)} />
-                <Label>Sync monthly input for both prepayment and OD</Label>
-              </div>
+            <div className="flex items-center gap-2 self-end h-9 w-full justify-end">
+              <Switch checked={useSharedInputPrepaymentOD} onCheckedChange={() => setUseSharedInputPrepaymentOD(!useSharedInputPrepaymentOD)} />
+              <Label>Sync monthly input for both prepayment and OD</Label>
+            </div>
           </div>
           <TabsContent value="original">
             <Table className="border-collapse border not-sm:w-fit">
@@ -207,7 +226,7 @@ export default function LoanCalculator() {
                   const prepayInput = inputsPrepayment.get(idx) || 0;
                   const odInput = inputsOD.get(idx) || 0;
                   if (schedule.original)
-                    return <AmortizationTableOriginalRow {...{ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule }} handleInputChange={handleInputChange} />
+                    return <AmortizationTableOriginalRow key={`${schedule.original.month}-${idx}`} {...{ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule }} handleInputChange={handleInputChange} />
                 }
                 )}
               </TableBody>
@@ -226,7 +245,7 @@ export default function LoanCalculator() {
                   const prepayInput = inputsPrepayment.get(idx) || 0;
                   const odInput = inputsOD.get(idx) || 0;
                   if (schedule.prepayment)
-                    return <AmortizationTablePrepaymentRow {...{ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule }} handleInputChange={handleInputChange} />
+                    return <AmortizationTablePrepaymentRow key={`${schedule.prepayment.month}-${idx}`}  {...{ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule }} handleInputChange={handleInputChange} />
                 }
                 )}
               </TableBody>
@@ -244,7 +263,7 @@ export default function LoanCalculator() {
                   const prepayInput = inputsPrepayment.get(idx) || 0;
                   const odInput = inputsOD.get(idx) || 0;
                   if (schedule.od)
-                    return <AmortizationTableODRow {...{ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule }} handleInputChange={handleInputChange} />
+                    return <AmortizationTableODRow key={`${schedule.od.month}-${idx}`}  {...{ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule }} handleInputChange={handleInputChange} />
                 }
                 )}
               </TableBody>
@@ -267,13 +286,13 @@ const Summary = ({ schedules }: { schedules: Schedule[] }) => {
     <TableHeader>
       <TableRow>
         <TableHead className="whitespace-normal">Variation</TableHead>
-        <TableHead className="whitespace-normal">Total Payments</TableHead>
-        <TableHead className="whitespace-normal">Payments vs Prepayment</TableHead>
-        <TableHead className="whitespace-normal">Total Interest</TableHead>
-        <TableHead className="whitespace-normal">Tenure (Months)</TableHead>
-        <TableHead className="whitespace-normal">Interest Saved</TableHead>
-        <TableHead className="whitespace-normal">Interest Saved vs Prepayment</TableHead>
-        <TableHead className="whitespace-normal">Tenure Saved</TableHead>
+        <TableHead className="whitespace-normal text-right">Total Payments</TableHead>
+        <TableHead className="whitespace-normal text-right">Payments vs Prepayment</TableHead>
+        <TableHead className="whitespace-normal text-right">Total Interest</TableHead>
+        <TableHead className="whitespace-normal text-right">Tenure (Months)</TableHead>
+        <TableHead className="whitespace-normal text-right">Interest Saved</TableHead>
+        <TableHead className="whitespace-normal text-right">Interest Saved vs Prepayment</TableHead>
+        <TableHead className="whitespace-normal text-right">Tenure Saved</TableHead>
         <TableHead className="whitespace-normal">Cheaper Than EMI?</TableHead>
         <TableHead className="whitespace-normal">Cheaper Than Prepayment?</TableHead>
       </TableRow>
@@ -282,13 +301,13 @@ const Summary = ({ schedules }: { schedules: Schedule[] }) => {
       {getSummaryRows(schedules).map((row, idx) => (
         <TableRow key={idx}>
           <TableCell>{row.variation}</TableCell>
-          <TableCell>{intl.format(row.totalPayments)}</TableCell>
-          <TableCell>{!!row.totalPaymentsWithPrepayment && intl.format(row.totalPaymentsWithPrepayment)}</TableCell>
-          <TableCell>{intl.format(row.totalInterest)}</TableCell>
-          <TableCell>{row.tenureMonths}</TableCell>
-          <TableCell>{intl.format(row.interestSaved)}</TableCell>
-          <TableCell>{!!row.interestSavedWithPrepayment && intl.format(row.interestSavedWithPrepayment)}</TableCell>
-          <TableCell>{row.tenureSaved}</TableCell>
+          <TableCell className="text-right">{intl.format(row.totalPayments)}</TableCell>
+          <TableCell className="text-right">{!!row.totalPaymentsWithPrepayment && intl.format(row.totalPaymentsWithPrepayment)}</TableCell>
+          <TableCell className="text-right">{intl.format(row.totalInterest)}</TableCell>
+          <TableCell className="text-right">{row.tenureMonths}</TableCell>
+          <TableCell className="text-right">{intl.format(row.interestSaved)}</TableCell>
+          <TableCell className="text-right">{!!row.interestSavedWithPrepayment && intl.format(row.interestSavedWithPrepayment)}</TableCell>
+          <TableCell className="text-right">{row.tenureSaved}</TableCell>
           <TableCell>{row.cheaperThanEMI}</TableCell>
           <TableCell>{row.cheaperThanPrepayment}</TableCell>
         </TableRow>
@@ -310,7 +329,7 @@ type AmortizationTableRowProps = {
 
 
 
-  handleInputChange: (type: 'Prepayment' | 'OD' | 'AdditionalEMI' | 'InterestRate' | 'InterestRateOD', index: number, value: number) => void
+  handleInputChange: (type: 'Prepayment' | 'OD' | 'AdditionalEMI' | 'InterestRate' | 'InterestRateOD', index: number, value: number, copy?: undefined | true) => void
 }
 
 const AmortizationTableOriginalHeader = () => {
@@ -384,6 +403,17 @@ const AmortizationTableODHeader = () => {
   </TableHeader>
 }
 
+const Menu = ({ children, copy }: { children: ReactNode, copy: () => void }) => {
+  return <ContextMenu>
+    <ContextMenuTrigger>
+      {children}
+    </ContextMenuTrigger>
+    <ContextMenuContent>
+      <ContextMenuItem onClick={copy}>Copy Down</ContextMenuItem>
+    </ContextMenuContent>
+  </ContextMenu>
+}
+
 const AmortizationTableHeader1 = () => {
   return <TableHeader>
     <TableRow className="border h-12" >
@@ -421,14 +451,11 @@ const AmortizationTableHeader1 = () => {
     </TableRow>
   </TableHeader>
 }
-const AmortizationTableOriginalRow = memo(({ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule, handleInputChange }: AmortizationTableRowProps) => {
+const AmortizationTableOriginalRow = ({ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule, handleInputChange }: AmortizationTableRowProps) => {
   console.log('row' + idx);
   const normal = schedule.original;
   const prepay = schedule.prepayment;
   const od = schedule.od;
-
-
-
 
   const className = od?.isInterestFree ? " text-gray-400" : "";
   return <TableRow key={idx}>
@@ -436,10 +463,14 @@ const AmortizationTableOriginalRow = memo(({ idx, rate, rateOD, additionalEMI, p
     <TableCell className="border text-right">{normal ? intl.format(normal.emi) : null}</TableCell>
 
     <TableCell >
-      <Input type="number" className="text-right  min-w-28" value={additionalEMI} onChange={(e) => handleInputChange('AdditionalEMI', idx, e.target.valueAsNumber)} />
+      <Menu copy={() => handleInputChange('AdditionalEMI', idx, additionalEMI, true)}>
+        <Input type="number" className="text-right  min-w-28" value={additionalEMI} onChange={(e) => handleInputChange('AdditionalEMI', idx, e.target.valueAsNumber)} />
+      </Menu>
     </TableCell>
     <TableCell >
-      <Input type="number" className="text-right  min-w-28" value={rate} onChange={(e) => handleInputChange('InterestRate', idx, e.target.valueAsNumber)} />
+      <Menu copy={() => handleInputChange('InterestRate', idx, rate, true)}>
+        <Input type="number" className="text-right  min-w-28" value={rate} onChange={(e) => handleInputChange('InterestRate', idx, e.target.valueAsNumber)} />
+      </Menu>
     </TableCell>
 
     <TableCell className="border text-right">{normal ? intl.format(normal.payment) : null}</TableCell>
@@ -453,7 +484,7 @@ const AmortizationTableOriginalRow = memo(({ idx, rate, rateOD, additionalEMI, p
 
 
   </TableRow>
-});
+};
 
 const AmortizationTablePrepaymentRow = memo(({ idx, rate, rateOD, additionalEMI, prepayInput, odInput, schedule, handleInputChange }: AmortizationTableRowProps) => {
   console.log('row' + idx);
@@ -470,10 +501,16 @@ const AmortizationTablePrepaymentRow = memo(({ idx, rate, rateOD, additionalEMI,
     <TableCell className="border text-right">{normal ? intl.format(normal.emi) : null}</TableCell>
 
     <TableCell >
-      <Input type="number" className="text-right  min-w-28" value={additionalEMI} onChange={(e) => handleInputChange('AdditionalEMI', idx, e.target.valueAsNumber)} />
+      <Menu copy={() => handleInputChange('AdditionalEMI', idx, additionalEMI, true)}>
+
+        <Input type="number" className="text-right  min-w-28" value={additionalEMI} onChange={(e) => handleInputChange('AdditionalEMI', idx, e.target.valueAsNumber)} />
+      </Menu>
     </TableCell>
     <TableCell >
-      <Input type="number" className="text-right  min-w-28" value={rate} onChange={(e) => handleInputChange('InterestRate', idx, e.target.valueAsNumber)} />
+      <Menu copy={() => handleInputChange('InterestRate', idx, rate, true)}>
+
+        <Input type="number" className="text-right  min-w-28" value={rate} onChange={(e) => handleInputChange('InterestRate', idx, e.target.valueAsNumber)} />
+      </Menu>
     </TableCell>
 
 
@@ -512,14 +549,20 @@ const AmortizationTableODRow = memo(({ idx, rate, rateOD, additionalEMI, prepayI
     <TableCell className="border text-right">{normal ? intl.format(normal.emi) : null}</TableCell>
 
     <TableCell >
-      <Input type="number" className="text-right  min-w-28" value={additionalEMI} onChange={(e) => handleInputChange('AdditionalEMI', idx, e.target.valueAsNumber)} />
+      <Menu copy={() => handleInputChange('AdditionalEMI', idx, additionalEMI, true)}>
+
+        <Input type="number" className="text-right  min-w-28" value={additionalEMI} onChange={(e) => handleInputChange('AdditionalEMI', idx, e.target.valueAsNumber)} />
+      </Menu>
     </TableCell>
 
 
 
 
     <TableCell >
-      <Input type="number" className="text-right  min-w-28" value={rateOD} onChange={(e) => handleInputChange('InterestRateOD', idx, e.target.valueAsNumber)} />
+      <Menu copy={() => handleInputChange('InterestRateOD', idx, rateOD, true)}>
+
+        <Input type="number" className="text-right  min-w-28" value={rateOD} onChange={(e) => handleInputChange('InterestRateOD', idx, e.target.valueAsNumber)} />
+      </Menu>
     </TableCell>
 
     <TableCell className={`${className} ${prepay ? "border" : ""} text-right`}>{od ? intl.format(od.payment) : null}</TableCell>

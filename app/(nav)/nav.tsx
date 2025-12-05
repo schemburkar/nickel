@@ -1,17 +1,30 @@
 'use client';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
+import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import { AppName } from "@/utils/constants";
 import Link from "next/link";
-import { forwardRef } from "react";
+import { forwardRef, useCallback } from "react";
+import { useTheme } from "next-themes"
 
 export const Nav = () => {
+    const { setTheme, resolvedTheme } = useTheme()
+
+    const toggleTheme = useCallback(() => {
+        setTheme(resolvedTheme === "dark" ? "light" : "dark")
+    }, [resolvedTheme, setTheme])
     return (
         <header >
-            <nav className="flex p-2 items-baseline">
-                <a className="text-xl" href="/"><img className="inline h-6"  src="/favicon.svg"/> {AppName}</a>
-                <NavigationMenu>
+            <nav className="flex p-2 not-lg:flex-col items-baseline">
+                <a className=" hidden print:block text-xl" href="/"><img className="inline h-6" src="/favicon.svg" /> {AppName}</a>
+                <NavigationMenu className="print:hidden">
                     <NavigationMenuList>
+
+                        <NavigationMenuLink href="/">
+                            <span className="text-xl"><img className="inline h-6" src="/favicon.svg" /> {AppName}</span>
+                        </NavigationMenuLink>
+                        
+
                         <NavigationMenuItem>
                             <NavigationMenuTrigger>Mutual Fund</NavigationMenuTrigger>
                             <NavigationMenuContent>
@@ -19,7 +32,7 @@ export const Nav = () => {
                                     <li className="row-span-3">
                                         <NavigationMenuLink asChild>
                                             <Link
-                                                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                                                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                                                 href="/mutual-fund/portfolio"
                                             >
                                                 {/* <Icons.logo className="h-6 w-6" /> */}
@@ -69,8 +82,8 @@ export const Nav = () => {
                                     <ListItem href="/home-loan/payment-schedule" title="Payment schedule">
                                         Know how much interest you pay every month
                                     </ListItem>
-                                    <ListItem href="/home-loan/payment-schedule-od" title="Compare with OD/Max Gain account">
-                                        How your loan reduces with OD account like &quot;Max Gain&quot;
+                                    <ListItem href="/home-loan/payment-schedule-od" title="Payment schedule with Max Gain">
+                                        Know your interest payment and save with &quot;Max Gain&quot;
                                     </ListItem>
                                 </ul>
                             </NavigationMenuContent>
@@ -78,6 +91,30 @@ export const Nav = () => {
 
                     </NavigationMenuList>
                 </NavigationMenu>
+                <div className="flex justify-end grow print:hidden">
+
+                    <Toggle onClick={toggleTheme}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="size-4.5"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 3l0 18" />
+                            <path d="M12 9l4.65 -4.65" />
+                            <path d="M12 14.3l7.37 -7.37" />
+                            <path d="M12 19.6l8.85 -8.85" />
+                        </svg>
+                    </Toggle>
+                </div>
             </nav>
         </header>);
 }
@@ -107,4 +144,4 @@ const ListItem = forwardRef<
         </li>
     )
 })
-ListItem.displayName='ListItem'
+ListItem.displayName = 'ListItem'

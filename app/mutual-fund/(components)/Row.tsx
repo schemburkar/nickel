@@ -3,7 +3,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "./date";
-import { Icons } from "../../../components/icons";
+import { Icons } from "@/components/icons";
 
 type RowProps = {
     row: {
@@ -21,10 +21,10 @@ type RowProps = {
 export const Row = ({ row, setRow, canDelete, onDeleteRow }: RowProps) => {
     return <TableRow key={row.id}>
         <TableCell className="text-right">
-            <Input defaultValue={row?.Amount} onChange={(e) => row && setRow({ ...row, Amount: e.target.valueAsNumber })} placeholder="Amount" className="text-right" type="number" />
+            <Input defaultValue={row?.Amount} onChange={(e) => row && setRow({ ...row, Amount: e.target.valueAsNumber })} placeholder="Amount" className="text-right  min-w-22" type="number" />
         </TableCell>
         <TableCell className="">
-            <DatePicker date={row?.Date} setDate={(d) => setRow({ ...row, Date: d })} />
+            <DatePicker  date={row?.Date} setDate={(d) => setRow({ ...row, Date: d })} />
         </TableCell>
         <TableCell className="text-right">
             <Input defaultValue={row?.Months} onChange={(e) => row && setRow({ ...row, Months: e.target.valueAsNumber })} placeholder="No of Months" className="text-right" type="number" />

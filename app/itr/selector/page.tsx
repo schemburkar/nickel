@@ -16,7 +16,7 @@ export default function Page() {
         const itrJSON = global.localStorage?.getItem('itr');
         const value: State = itrJSON ? JSON.parse(itrJSON) : null;
         setState({
-            gross: value?.gross || 1200000,
+            gross: value?.gross || 15_00_000,
 
             section10_coupons: value?.section10_coupons || 0,
             section10_lta: value?.section10_lta || 0,
@@ -75,7 +75,7 @@ export default function Page() {
     const isNew = result ? result?.new.total < result?.old.total : null;
     return (<div className="flex flex-col items-center  print:items-start">
         <section className="m-4 w-4/5 print:hidden">
-            <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+            <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 href="/itr/selector">
                 <div className="mb-2 mt-4 text-lg font-medium">
                     Income Tax - Regime Selection (FY 2025 - 2026)
@@ -88,12 +88,12 @@ export default function Page() {
                 </p>
             </a>
         </section>
-        <section className="m-4 w-4/5 print:m-1 print:w-full">
+        <section className="m-4 w-4/5 print:m-1 print:w-full [&_input]:invalid:text-red-400  [&_input]:invalid:border-red-500 [&_input]:print:hidden">
             <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-2/6 print:w-1/6">Head</TableHead>
-                        <TableHead className="text-right w-1/6">Amount</TableHead>
+                        <TableHead className="text-right w-1/6 print:invisible">Amount</TableHead>
                         <TableHead className="text-right  w-1/6">Old Regime</TableHead>
                         <TableHead className="text-right  w-1/6">New Regime</TableHead>
                     </TableRow>
@@ -102,7 +102,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-medium">Gross Salary</TableCell>
                         <TableCell className="text-right">
-                            <Input defaultValue={state?.gross} onChange={(e) => state && setState({ ...state, gross: e.target.valueAsNumber })} className="text-right" type="number" placeholder="Gross Salary" />
+                            <Input min={0} max={20_00_00_000} defaultValue={state?.gross} onChange={(e) => state && setState({ ...state, gross: e.target.valueAsNumber })} className="text-right  " type="number" placeholder="Gross Salary" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.gross) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.gross) : shim}</TableCell>
@@ -117,7 +117,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Food Coupons</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.section10_coupons} onChange={(e) => state && setState({ ...state, section10_coupons: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="Food Coupons" defaultValue={state?.section10_coupons} onChange={(e) => state && setState({ ...state, section10_coupons: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section10_coupons) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -126,7 +126,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">LTA Reimbursement</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="LTA Reimbursement" defaultValue={state?.section10_lta} onChange={(e) => state && setState({ ...state, section10_lta: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="LTA Reimbursement" defaultValue={state?.section10_lta} onChange={(e) => state && setState({ ...state, section10_lta: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section10_lta) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -136,7 +136,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">HRA</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="HRA" defaultValue={state?.section10_hra} onChange={(e) => state && setState({ ...state, section10_hra: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="HRA" defaultValue={state?.section10_hra} onChange={(e) => state && setState({ ...state, section10_hra: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section10_hra) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -147,7 +147,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Telephone Reimbursement</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Telephone Reimbursement" defaultValue={state?.section10_telephone} onChange={(e) => state && setState({ ...state, section10_telephone: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="Telephone Reimbursement" defaultValue={state?.section10_telephone} onChange={(e) => state && setState({ ...state, section10_telephone: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section10_telephone) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -157,7 +157,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Self-owned Car Maintenance</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Self-owned Car Maintenance" defaultValue={state?.section10_car} onChange={(e) => state && setState({ ...state, section10_car: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="Self-owned Car Maintenance" defaultValue={state?.section10_car} onChange={(e) => state && setState({ ...state, section10_car: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section10_car) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -167,7 +167,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Self-owned Car Driver Salary</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Self-owned Car Driver Salary" defaultValue={state?.section10_driver} onChange={(e) => state && setState({ ...state, section10_driver: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="Self-owned Car Driver Salary" defaultValue={state?.section10_driver} onChange={(e) => state && setState({ ...state, section10_driver: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section10_driver) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -177,7 +177,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Any Other Exemption</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Any Other Exemption" defaultValue={state?.section10_others} onChange={(e) => state && setState({ ...state, section10_others: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="Any Other Exemption" defaultValue={state?.section10_others} onChange={(e) => state && setState({ ...state, section10_others: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section10_others) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -206,7 +206,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Interest on Home Loan (Self Occupied)</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Interest on Home Loan (Self Occupied)" defaultValue={state?.section24_self} onChange={(e) => state && setState({ ...state, section24_self: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="Interest on Home Loan (Self Occupied)" defaultValue={state?.section24_self} onChange={(e) => state && setState({ ...state, section24_self: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section24_self) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -215,7 +215,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Interest on Home Loan (let out)</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Interest on Home Loan (let out)" defaultValue={state?.section24_rent} onChange={(e) => state && setState({ ...state, section24_rent: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} placeholder="Interest on Home Loan (let out)" defaultValue={state?.section24_rent} onChange={(e) => state && setState({ ...state, section24_rent: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.section24_rent) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -247,7 +247,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-normal">80C</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80c} onChange={(e) => state && setState({ ...state, deduction_section80c: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0}  max={150_000} placeholder="80C" defaultValue={state?.deduction_section80c} onChange={(e) => state && setState({ ...state, deduction_section80c: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80c) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -256,7 +256,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-normal">Additional Investment in NPS - 80CCD(1B)</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80ccd1b} onChange={(e) => state && setState({ ...state, deduction_section80ccd1b: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} max={50_000} placeholder="NPS - 80CCD(1B)" defaultValue={state?.deduction_section80ccd1b} onChange={(e) => state && setState({ ...state, deduction_section80ccd1b: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80ccd1b) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -268,7 +268,7 @@ export default function Page() {
                         
                         <TableCell className="font-normal">Medical treatment (Specified Diseases only) - Sr. Citizen - 80DDB</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80ddb} onChange={(e) => state && setState({ ...state, deduction_section80ddb: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} max={1_00_000} placeholder="Medical treatment - 80DDB" defaultValue={state?.deduction_section80ddb} onChange={(e) => state && setState({ ...state, deduction_section80ddb: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80ccd1b) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -285,7 +285,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Health Insurance Premium (Self/Spouse)</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80d_self} onChange={(e) => state && setState({ ...state, deduction_section80d_self: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} max={50_000} placeholder="Health Insurance Premium - 80D" defaultValue={state?.deduction_section80d_self} onChange={(e) => state && setState({ ...state, deduction_section80d_self: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80d_self) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -295,7 +295,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Preventive Health chcekup (Self/Spouse)</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80d_selfpreventive} onChange={(e) => state && setState({ ...state, deduction_section80d_selfpreventive: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} max={5000} placeholder="Preventive Health chcekup - 80D" defaultValue={state?.deduction_section80d_selfpreventive} onChange={(e) => state && setState({ ...state, deduction_section80d_selfpreventive: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80d_selfpreventive) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -306,7 +306,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Preventive Health chcekup (Parents - Sr. Citizen)</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80d_parentpreventive} onChange={(e) => state && setState({ ...state, deduction_section80d_parentpreventive: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} max={5000} placeholder="Preventive Health chcekup - 80D" defaultValue={state?.deduction_section80d_parentpreventive} onChange={(e) => state && setState({ ...state, deduction_section80d_parentpreventive: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80d_parentpreventive) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -317,7 +317,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-light">Medical expenditure (Parents - Sr. Citizen)</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80d_parent} onChange={(e) => state && setState({ ...state, deduction_section80d_parent: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} max={50_000} placeholder="Medical expenditure - 80D" defaultValue={state?.deduction_section80d_parent} onChange={(e) => state && setState({ ...state, deduction_section80d_parent: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80d_parent) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -334,9 +334,9 @@ export default function Page() {
 
 
                     <TableRow>
-                        <TableCell className="font-normal">Interest in Savings account - 80TTA</TableCell>
+                        <TableCell className="font-normal">Interest in Savings account - 80TTA/80TTB</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80tta} onChange={(e) => state && setState({ ...state, deduction_section80tta: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} max={50_000} placeholder="Interest in Savings - 80TTA" defaultValue={state?.deduction_section80tta} onChange={(e) => state && setState({ ...state, deduction_section80tta: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80tta) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(0) : shim}</TableCell>
@@ -367,7 +367,7 @@ export default function Page() {
                     <TableRow>
                         <TableCell className="font-normal">Additional exemption under NPS (Employer) - 80CCD(2)</TableCell>
                         <TableCell className="text-right">
-                            <Input placeholder="Food Coupons" defaultValue={state?.deduction_section80CCD2} onChange={(e) => state && setState({ ...state, deduction_section80CCD2: e.target.valueAsNumber })} className="text-right" type="number" />
+                            <Input min={0} max={5_00_00_000} placeholder="NPS - 80CCD(2)" defaultValue={state?.deduction_section80CCD2} onChange={(e) => state && setState({ ...state, deduction_section80CCD2: e.target.valueAsNumber })} className="text-right" type="number" />
                         </TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80CCD2) : shim}</TableCell>
                         <TableCell className="text-right">{state ? intl.format(state.deduction_section80CCD2) : shim}</TableCell>
@@ -448,8 +448,8 @@ export default function Page() {
                         <TableCell className="text-right">
 
                         </TableCell>
-                        <TableCell className={`text-right font-medium p-0`}><span className={` ${isOld ? " bg-gradient-to-b from-muted/50 to-muted rounded py-0.5 px-2" : ""}`}>{result ? intl.format(result?.old.total) : shim}</span></TableCell>
-                        <TableCell className={`text-right font-medium p-0`}><span className={` ${isNew ? " bg-gradient-to-b from-muted/50 to-muted rounded py-0.5 px-2" : ""}`}>{result ? intl.format(result?.new.total) : shim}</span></TableCell>
+                        <TableCell className={`text-right font-medium p-0`}><span className={`py-0.5 px-2 ${isOld ? " bg-linear-to-b from-muted/50 to-muted rounded " : ""}`}>{result ? intl.format(result?.old.total) : shim}</span></TableCell>
+                        <TableCell className={`text-right font-medium p-0`}><span className={`py-0.5 px-2 ${isNew ? " bg-linear-to-b from-muted/50 to-muted rounded " : ""}`}>{result ? intl.format(result?.new.total) : shim}</span></TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -457,8 +457,8 @@ export default function Page() {
                         <TableCell className="text-right">
 
                         </TableCell>
-                        <TableCell className="text-right font-medium p-0"><span className={` ${isOld ? " bg-gradient-to-b from-muted/50 to-muted rounded py-0.5 px-2" : ""}`}>{result ? (isOld ? intl.format(result?.new.total - result?.old.total) : "") : shim}</span></TableCell>
-                        <TableCell className="text-right font-medium p-0"><span className={` ${isNew ? " bg-gradient-to-b from-muted/50 to-muted rounded py-0.5 px-2" : ""}`}>{result ? (isNew ? intl.format(result?.old.total - result?.new.total) : "") : shim}</span></TableCell>
+                        <TableCell className="text-right font-medium p-0"><span className={`py-0.5 px-2 ${isOld ? " bg-linear-to-b from-muted/50 to-muted rounded " : ""}`}>{result ? (isOld ? intl.format(result?.new.total - result?.old.total) : "") : shim}</span></TableCell>
+                        <TableCell className="text-right font-medium p-0"><span className={`py-0.5 px-2 ${isNew ? " bg-linear-to-b from-muted/50 to-muted rounded " : ""}`}>{result ? (isNew ? intl.format(result?.old.total - result?.new.total) : "") : shim}</span></TableCell>
                     </TableRow>
 
 

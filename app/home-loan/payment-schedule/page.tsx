@@ -46,12 +46,12 @@ export default function LoanCalculator() {
   }, []);
 
   useLayoutEffect(() => {
-    const itrJSON = global.localStorage?.getItem('portfolio');
+   const itrJSON = null; global.localStorage?.getItem('portfolio');
     const value = itrJSON ? JSON.parse(itrJSON) : null;
 
 
-    setLoanAmount(value?.loanAmount || 200000);
-    setTenure(value?.tenure || 24);
+    setLoanAmount(value?.loanAmount || 2500000);
+    setTenure(value?.tenure || 240);
     setInterestRate(value?.interestRate || 8);
     setInterestRateOD(value?.interestRateOD || 8);
 
@@ -65,20 +65,20 @@ export default function LoanCalculator() {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
 
-    if (global.localStorage) {
-      global.localStorage.setItem('portfolio', JSON.stringify({
-        loanAmount, tenure, interestRate, interestRateOD,
-        inputsPrepayment: [...inputsPrepayment.entries()],
-        inputsAdditionalEMI: [...inputsAdditionalEMI.entries()],
-        inputsInterestRate: [...inputsInterestRate.entries()],
+  //   if (global.localStorage) {
+  //     global.localStorage.setItem('portfolio', JSON.stringify({
+  //       loanAmount, tenure, interestRate, interestRateOD,
+  //       inputsPrepayment: [...inputsPrepayment.entries()],
+  //       inputsAdditionalEMI: [...inputsAdditionalEMI.entries()],
+  //       inputsInterestRate: [...inputsInterestRate.entries()],
 
-      }))
-    }
+  //     }))
+  //   }
 
-  }, [loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsAdditionalEMI, inputsInterestRate]);
+  // }, [loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsAdditionalEMI, inputsInterestRate]);
 
 
   const schedules = useMemo(() => calculateAmortization(loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsPrepayment, inputsAdditionalEMI, inputsInterestRate, inputsInterestRate), [
@@ -87,7 +87,7 @@ export default function LoanCalculator() {
 
   return (<div className="flex flex-col items-center  print:items-start">
     <section className="m-4 w-4/5 print:hidden">
-      <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+      <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
         href="/itr/selector">
         <div className="mb-2 mt-4 text-lg font-medium">
           Mutual Fund - Portfolio

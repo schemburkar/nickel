@@ -21,8 +21,8 @@ const Num = () => {
 }
 export default function Home() {
   return (
-    <div className=" bg-gradient-to-b from-white via-muted/50 to-white grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-10rem)] p-4  gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center w-full">
+    <div className=" bg-linear-to-b from-white via-muted/50 to-white dark:from-[#080808] dark:via-gray-900 dark:to-[#080808] grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-10rem)] p-4  gap-16 sm:p-20 font-(family-name:--font-geist-sans)">
+      <main className="flex flex-col gap-8 row-start-2 items-center w-full">
         {/* <Image
           className="dark:invert self-center-safe"
           src="/nickel.svg"
@@ -34,7 +34,7 @@ export default function Home() {
         <p className="text-2xl"><img className="inline h-6"  src="/favicon.svg"/> zero nickels</p>
         <section className="grid grid-row-3 lg:grid-cols-3 gap-4 row-start-2 w-4/5 ">
 
-          {/* bg-gradient-to-b from-muted/50 to-muted hover:shadow-md hover:bg-accent */}
+          {/* bg-linear-to-b from-muted/50 to-muted hover:shadow-md hover:bg-accent */}
           <Card>
             <CardHeader>
               <CardTitle>  Mutual Fund</CardTitle>
@@ -44,7 +44,7 @@ export default function Home() {
             <CardContent className="flex flex-col gap-2  ">
 
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 href="/mutual-fund/portfolio"
               >
                 <div className="mb-2  text-lg font-medium">
@@ -56,7 +56,7 @@ export default function Home() {
               </a>
 
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 href="/mutual-fund/whatif"
               >
                 <div className="mb-2 text-lg font-medium">
@@ -78,7 +78,7 @@ export default function Home() {
             <CardContent className="flex flex-col gap-2  ">
 
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 href="/itr/selector"
               >
                 <div className="mb-2 text-lg font-medium">
@@ -89,7 +89,7 @@ export default function Home() {
                 </p>
               </a>
               {/* <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 href="#"
               >
                 <div className="mb-2 mt-4 text-lg font-medium">
@@ -112,7 +112,7 @@ export default function Home() {
             <CardContent className="flex flex-col gap-2  ">
 
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 href="/home-loan/payment-schedule"
               >
                 <div className="mb-2  text-lg font-medium">
@@ -123,14 +123,14 @@ export default function Home() {
                 </p>
               </a>
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 href="/home-loan/payment-schedule-od"
               >
                 <div className="mb-2 text-lg font-medium">
-                  Compare with OD account
+                Payment schedule with Max Gain
                 </div>
                 <p className="text-sm leading-tight text-muted-foreground">
-                  How your loan reduces with OD account like &quot;Max Gain&quot;
+                Know how much interest you pay every month and save with &quot;Max Gain&quot;
                 </p>
               </a>
 
@@ -141,7 +141,7 @@ export default function Home() {
 
 
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
 
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"

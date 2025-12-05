@@ -2,9 +2,6 @@ import { Schedule } from "./Schedule";
 
 export const getMapValue = (map: Map<number, number>, index: number, defaultValue: number): number => {
   if (map.has(index)) return map.get(index)!;
-  const lastIndex = [...map.keys()].sort((a, b) => a - b).findLast(i => i < index);
-  if (lastIndex) return map.get(lastIndex)!;
-
   return defaultValue;
 
 }

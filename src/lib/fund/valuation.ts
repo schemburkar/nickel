@@ -1,5 +1,3 @@
-import Axios from "axios";
-import { buildWebStorage, setupCache } from "axios-cache-interceptor";
 import { xirr } from "../xirr/xirr";
 import { addMonths } from "date-fns";
 
@@ -56,21 +54,40 @@ const getTransactions = (fund: Fund, latestDate: Date) => {
     return results;
 }
 
-export const evaluate = async (fund: Fund): Promise<Result> => {
+const ttl = 1000 * 60 * 60 * 5;
+
+const getData = async (schemeId: string, baseUrl?: string): Promise<string> => {
+    const currentTime = new Date().getTime();
+    const data = global.localStorage && global.localStorage.getItem(`fund-nav-${schemeId}`);
+    if (data) {
+        const timeValue = global.localStorage.getItem(`fund-nav-${schemeId}-time`);
+        const time = timeValue ? +timeValue : 0;
+        if (currentTime > (time + ttl)) {
+            //clear
+            global.localStorage.removeItem(`fund-nav-${schemeId}`);
+            global.localStorage.removeItem(`fund-nav-${schemeId}-time`);
+        }
+
+        return data;
+    }
+    const res = await (await fetch(`${baseUrl}/mutual-funds/nav/${schemeId}`)).text();
+    if (global.localStorage) {
+        global.localStorage.setItem(`fund-nav-${schemeId}`, res);
+        global.localStorage.setItem(`fund-nav-${schemeId}-time`, currentTime.toString());
+    }
+    return res;
+}
+export const evaluate = async (fund: Fund, baseUrl?: string): Promise<Result> => {
 
 
-    const instance = Axios.create();
-    const axios = setupCache(instance, {
-        storage: buildWebStorage(global.localStorage, 'fund-evaluate'),
-        ttl: 1000 * 60 * 60 * 5 // 5 hrs
-    });
 
-    const baseUrl = process.env.FUND || 'https://raw.githubusercontent.com/whatifmoney/public-data/main' || 'http://localhost:5002/money/master';
+    //const baseUrl = process.env.FUND || 'https://raw.githubusercontent.com/whatifmoney/public-data/main' || 'http://localhost:5002/money/master';
     //const res = await axios.get<string>(`${baseUrl}/mutual-funds/nav/${fund.schemeId}`, { method:"GET",   headers:{ "Accept":"*/*", "Content-Type":"text/plain"},  });
 
-    const res = { data : await (await fetch(`${baseUrl}/mutual-funds/nav/${fund.schemeId}`)).text() };
+
+    const res = await getData(fund.schemeId, baseUrl);
     // Parse the response into an array of date and NAV pairs
-    const navData: { date: Date; nav: number }[] = res.data.split('\n').map(line => {
+    const navData: { date: Date; nav: number }[] = res.split('\n').map(line => {
         const [date, nav] = line.split(' ');
         return { date: new Date(date), nav: parseFloat(nav) };
     }).sort((a, b) => a.date.getTime() - b.date.getTime()); // Sort by date in ascending order;
