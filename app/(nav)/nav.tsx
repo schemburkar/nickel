@@ -20,10 +20,10 @@ export const Nav = () => {
                 <NavigationMenu className="print:hidden">
                     <NavigationMenuList>
 
-                        <NavigationMenuLink href="/">
-                            <span className="text-xl"><img className="inline h-6" src="/favicon.svg" /> {AppName}</span>
+                        <NavigationMenuLink className="text-xl pt-1" href="/">
+                            <span ><img className="inline h-6" src="/favicon.svg" /> {AppName}</span>
                         </NavigationMenuLink>
-                        
+
 
                         <NavigationMenuItem>
                             <NavigationMenuTrigger>Mutual Fund</NavigationMenuTrigger>
@@ -66,6 +66,9 @@ export const Nav = () => {
 
                                     <ListItem href="/itr/selector" title="Regime Selection">
                                         You decide what is benefitial for you.
+                                    </ListItem>
+                                    <ListItem href="/itr/checklist" title="Returns Filing Checklist">
+                                        Mark documents as you collect them.
                                     </ListItem>
                                     {/* <ListItem href="/docs/primitives/typography" title="Tax checklist">
                                         List of items you wnat to know before filing your returns

@@ -88,17 +88,17 @@ export default function Home() {
                   You decide what is benefitial for you.
                 </p>
               </a>
-              {/* <a
+              <a
                 className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                href="#"
+                href="/itr/checklist"
               >
                 <div className="mb-2 mt-4 text-lg font-medium">
-                More coming Soon!
+                Returns Filing Checklist
                 </div>
                 <p className="text-sm leading-tight text-muted-foreground">
-                  &nbsp;
+                Mark documents as you collect them
                 </p>
-              </a> */}
+              </a>
 
             </CardContent>
 

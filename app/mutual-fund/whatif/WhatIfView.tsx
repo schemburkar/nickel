@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Result, evaluate } from "@/lib/fund/valuation";
 import { Label } from "@/components/ui/label";
 import { subYears } from "date-fns";
-import { Icons } from "../../../components/icons";
+import { Icons } from "@/components/icons";
 import { Row } from "../(components)/Row";
 import { XIRR } from "../(components)/XIRR";
 import { SchemeCode } from "../(components)/scheme";
