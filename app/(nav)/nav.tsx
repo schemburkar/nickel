@@ -32,7 +32,7 @@ export const Nav = () => {
                                     <li className="row-span-3">
                                         <NavigationMenuLink asChild>
                                             <Link
-                                                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                                                className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
                                                 href="/mutual-fund/portfolio"
                                             >
                                                 {/* <Icons.logo className="h-6 w-6" /> */}

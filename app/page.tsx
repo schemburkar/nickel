@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -7,34 +6,14 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-const Num = () => {
-
-  return <span className="inline-grid grid-cols-[1fr] grid-rows-[1fr] font-mono text-right">
-    <span className="num relative col-1 row-1"></span>
-    <span className="col-1 row-1">
-
-      <span className="counter relative font-mono"></span>
-      <span className="counter relative font-mono"></span>
-      <span className="counter relative font-mono"></span>
-    </span>
-  </span>
-}
 export default function Home() {
   return (
-    <div className=" bg-linear-to-b from-white via-muted/50 to-white dark:from-[#080808] dark:via-gray-900 dark:to-[#080808] grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-10rem)] p-4  gap-16 sm:p-20 font-(family-name:--font-geist-sans)">
+    <div className=" bg-linear-to-b from-white via-muted/50 to-white dark:from-background dark:via-gray-900 dark:to-background grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-10rem)] p-4  gap-16 sm:p-20 font-(family-name:--font-geist-sans)">
       <main className="flex flex-col gap-8 row-start-2 items-center w-full">
-        {/* <Image
-          className="dark:invert self-center-safe"
-          src="/nickel.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        /> */}
+      
         <p className="text-2xl"><img className="inline h-6"  src="/favicon.svg"/> zero nickels</p>
         <section className="grid grid-row-3 lg:grid-cols-3 gap-4 row-start-2 w-4/5 ">
 
-          {/* bg-linear-to-b from-muted/50 to-muted hover:shadow-md hover:bg-accent */}
           <Card>
             <CardHeader>
               <CardTitle>  Mutual Fund</CardTitle>
@@ -44,7 +23,7 @@ export default function Home() {
             <CardContent className="flex flex-col gap-2  ">
 
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
                 href="/mutual-fund/portfolio"
               >
                 <div className="mb-2  text-lg font-medium">
@@ -56,7 +35,7 @@ export default function Home() {
               </a>
 
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
                 href="/mutual-fund/whatif"
               >
                 <div className="mb-2 text-lg font-medium">
@@ -78,7 +57,7 @@ export default function Home() {
             <CardContent className="flex flex-col gap-2  ">
 
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
                 href="/itr/selector"
               >
                 <div className="mb-2 text-lg font-medium">
@@ -89,7 +68,7 @@ export default function Home() {
                 </p>
               </a>
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
                 href="/itr/checklist"
               >
                 <div className="mb-2 mt-4 text-lg font-medium">
@@ -112,7 +91,7 @@ export default function Home() {
             <CardContent className="flex flex-col gap-2  ">
 
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
                 href="/home-loan/payment-schedule"
               >
                 <div className="mb-2  text-lg font-medium">
@@ -123,7 +102,7 @@ export default function Home() {
                 </p>
               </a>
               <a
-                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
                 href="/home-loan/payment-schedule-od"
               >
                 <div className="mb-2 text-lg font-medium">

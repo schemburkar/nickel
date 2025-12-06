@@ -122,3 +122,10 @@
   }
 }
 
+
+@layer components{
+  .card-highlight{
+    /* @apply bg-linear-to-b from-muted/50 dark:from-gray-900 dark:to-gray-950 to-muted */
+    @apply bg-slate-50 border hover:bg-slate-200 dark:bg-[rgb(20,20,22)] dark:hover:bg-[rgb(29,29,32)]
+  }
+}

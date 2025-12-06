@@ -75,7 +75,7 @@ export default function Page() {
     const isNew = result ? result?.new.total < result?.old.total : null;
     return (<div className="flex flex-col items-center  print:items-start">
         <section className="m-4 w-4/5 print:hidden">
-            <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+            <a className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
                 href="/itr/selector">
                 <div className="mb-2 mt-4 text-lg font-medium">
                     Income Tax - Regime Selection (FY 2025 - 2026)
@@ -448,8 +448,8 @@ export default function Page() {
                         <TableCell className="text-right">
 
                         </TableCell>
-                        <TableCell className={`text-right font-medium p-0`}><span className={`py-0.5 px-2 ${isOld ? " bg-linear-to-b from-muted/50 to-muted rounded " : ""}`}>{result ? intl.format(result?.old.total) : shim}</span></TableCell>
-                        <TableCell className={`text-right font-medium p-0`}><span className={`py-0.5 px-2 ${isNew ? " bg-linear-to-b from-muted/50 to-muted rounded " : ""}`}>{result ? intl.format(result?.new.total) : shim}</span></TableCell>
+                        <TableCell className={`text-right font-medium p-0`}><span className={`py-0.5 px-2 ${isOld ? " card-highlight rounded border-none" : ""}`}>{result ? intl.format(result?.old.total) : shim}</span></TableCell>
+                        <TableCell className={`text-right font-medium p-0`}><span className={`py-0.5 px-2 ${isNew ? " card-highlight rounded border-none" : ""}`}>{result ? intl.format(result?.new.total) : shim}</span></TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -457,8 +457,8 @@ export default function Page() {
                         <TableCell className="text-right">
 
                         </TableCell>
-                        <TableCell className="text-right font-medium p-0"><span className={`py-0.5 px-2 ${isOld ? " bg-linear-to-b from-muted/50 to-muted rounded " : ""}`}>{result ? (isOld ? intl.format(result?.new.total - result?.old.total) : "") : shim}</span></TableCell>
-                        <TableCell className="text-right font-medium p-0"><span className={`py-0.5 px-2 ${isNew ? " bg-linear-to-b from-muted/50 to-muted rounded " : ""}`}>{result ? (isNew ? intl.format(result?.old.total - result?.new.total) : "") : shim}</span></TableCell>
+                        <TableCell className="text-right font-medium p-0"><span className={`py-0.5 px-2 ${isOld ? " card-highlight rounded border-none" : ""}`}>{result ? (isOld ? intl.format(result?.new.total - result?.old.total) : "") : shim}</span></TableCell>
+                        <TableCell className="text-right font-medium p-0"><span className={`py-0.5 px-2 ${isNew ? " card-highlight rounded border-none" : ""}`}>{result ? (isNew ? intl.format(result?.old.total - result?.new.total) : "") : shim}</span></TableCell>
                     </TableRow>
 
 
