@@ -1,4 +1,6 @@
-export const Banner = ({ href, title, subTitle, footer }) => {
+import { ReactNode } from "react";
+
+export const Banner = ({ href, title, subTitle, footer }: { href: string, title: ReactNode, subTitle?: ReactNode, footer?: ReactNode }) => {
     return <section className="m-4 lg:w-4/5 print:hidden">
         <a className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
             href={href}>
