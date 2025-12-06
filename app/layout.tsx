@@ -35,7 +35,7 @@ export default function RootLayout({
       <body
         className={` antialiased `}
       >
-        <ThemeProvider attribute={'class'}>
+        <ThemeProvider defaultTheme="light" enableSystem={false} attribute={'class'}>
 
           <Nav />
           {children}
