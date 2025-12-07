@@ -33,7 +33,7 @@ export default function RootLayout({
         {/* <link rel="icon" type="image/svg+xml" sizes="45x45" href="/favicon.svg?<generated>" /> */}
       </head>
       <body
-        className={` antialiased `}
+        className={` antialiased h-dvh`}
       >
         <ThemeProvider defaultTheme="light" enableSystem={false} attribute={'class'}>
 

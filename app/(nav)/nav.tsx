@@ -15,13 +15,13 @@ export const Nav = () => {
     }, [resolvedTheme, setTheme])
     return (
         <header >
-            <nav className="flex p-2 not-lg:flex-col items-baseline">
+            <nav className="flex p-2  items-baseline">
                 <a className=" hidden print:block text-xl" href="/"><img className="inline h-6" src="/favicon.svg" /> {AppName}</a>
                 <NavigationMenu className="print:hidden">
                     <NavigationMenuList>
 
                         <NavigationMenuLink className="text-xl pt-1" href="/">
-                            <span ><img className="inline h-6" src="/favicon.svg" /> {AppName}</span>
+                            <span className="whitespace-nowrap min-w-30 "><img className="inline h-6 mr-1" src="/favicon.svg" /><span className="">{AppName}</span></span>
                         </NavigationMenuLink>
 
 
@@ -95,7 +95,7 @@ export const Nav = () => {
                     </NavigationMenuList>
                 </NavigationMenu>
                 <div className="flex justify-end grow print:hidden">
-
+                    
                     <Toggle onClick={toggleTheme}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
