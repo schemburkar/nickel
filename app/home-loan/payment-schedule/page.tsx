@@ -95,13 +95,13 @@ export default function LoanCalculator() {
       <a className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
         href="/itr/selector">
         <div className="mb-2 mt-4 text-lg font-medium">
-          Mutual Fund - Portfolio
+          Payment schedule
         </div>
         <p className="text-sm leading-tight text-muted-foreground">
-          Build your fund portfolio
+          Know how much interest you pay every month
         </p>
         <p className="text-sm leading-7 text-muted-foreground ">
-          Disclaimer: The values shown below are aproximate and for personal use only. Please consult your mutual fund advisor/AMC for accurate calculations.
+          Disclaimer: The values shown below are aproximate and for personal use only. Please consult your tax advisor/Bank/NBFC for accurate calculations.
         </p>
       </a>
     </section>

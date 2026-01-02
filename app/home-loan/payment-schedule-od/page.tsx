@@ -144,13 +144,13 @@ export default function LoanCalculator() {
       <a className="flex h-full w-full select-none flex-col justify-end rounded-md card-highlight p-6 no-underline outline-none focus:shadow-md"
         href="/itr/selector">
         <div className="mb-2 mt-4 text-lg font-medium">
-          Mutual Fund - Portfolio
+          Payment schedule with Max Gain
         </div>
         <p className="text-sm leading-tight text-muted-foreground">
-          Build your fund portfolio
+          Know your interest payment and save with &quot;Max Gain&quot;
         </p>
         <p className="text-sm leading-7 text-muted-foreground ">
-          Disclaimer: The values shown below are aproximate and for personal use only. Please consult your mutual fund advisor/AMC for accurate calculations.
+          Disclaimer: The values shown below are aproximate and for personal use only. Please consult your tax advisor/Bank/NBFC for accurate calculations.
         </p>
       </a>
     </section>
@@ -218,7 +218,7 @@ export default function LoanCalculator() {
             <TabsList>
               <TabsTrigger value="original">Original</TabsTrigger>
               <TabsTrigger value="prepayment">Prepayment</TabsTrigger>
-              <TabsTrigger value="od">OD</TabsTrigger>
+              <TabsTrigger value="od">Max Gain / OD</TabsTrigger>
             </TabsList>
             <div className="flex items-center gap-2 self-end h-9 w-full justify-end">
               <Switch checked={useSharedInputPrepaymentOD} onCheckedChange={() => setUseSharedInputPrepaymentOD(!useSharedInputPrepaymentOD)} />
