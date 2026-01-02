@@ -15,6 +15,7 @@ export function calculateAmortization(
   inputsAdditionalEMI: Map<number, number>,
   inputsInterestRate: Map<number, number>,
   inputsInterestRateOD: Map<number, number>,
+  startDate: Date
 ): Schedule[] {
 
   const monthlyRateFn = (r: number) => r / 12 / 100;
@@ -134,10 +135,11 @@ export function calculateAmortization(
 
 
 
-
+const d = new Date(startDate.getFullYear(), startDate.getMonth() + i - 1, startDate.getDate());
     schedule.push({
       original: includeOriginal ? {
         month: i,
+        date :d,
         emi: actualEMIOriginal,
         interest: interestOriginal,
         principal: principalOriginal,
@@ -149,6 +151,7 @@ export function calculateAmortization(
       } : null,
       prepayment: includePrepay ? {
         month: i,
+        date :d,
         emi: actualEMIPrepay,
         interest: interestPrepay,
         principal: principalPrepay,
@@ -161,6 +164,7 @@ export function calculateAmortization(
       } : null,
       od: IncludeOd ? {
         month: i,
+        date :d,
         emi: actualEMIOD,
         interest: interestOD,
         principal: principalOD,

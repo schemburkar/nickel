@@ -7,14 +7,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 import { calculateAmortization, getMapValue } from "./calculateAmortization";
 import { Schedule } from "./Schedule";
 import { getSummaryRows } from "./getSummaryRows";
+import { ScrollOnDesktop, TableEx } from "@app/mutual-fund/(components)/Row";
+import { format } from "date-fns";
+import { DatePicker } from "@app/mutual-fund/(components)/date";
 
 const intl = new Intl.NumberFormat("en-IN", { style: 'currency', currency: 'INR', })
-
+const defaultDate = new Date();
+defaultDate.setFullYear(new Date().getFullYear() - 1);
 export default function LoanCalculator() {
   const [loanAmount, setLoanAmount] = useState<number>(0);
   const [tenure, setTenure] = useState<number>(0);
   const [interestRate, setInterestRate] = useState<number>(0);
   const [interestRateOD, setInterestRateOD] = useState<number>(0);
+  const [startDate, setStartDate] = useState<Date>(defaultDate);
 
 
   const [inputsPrepayment, setInputsPrepayment] = useState<Map<number, number>>(new Map<number, number>());
@@ -46,7 +51,7 @@ export default function LoanCalculator() {
   }, []);
 
   useLayoutEffect(() => {
-   const itrJSON = null; global.localStorage?.getItem('portfolio');
+    const itrJSON = null; global.localStorage?.getItem('portfolio');
     const value = itrJSON ? JSON.parse(itrJSON) : null;
 
 
@@ -81,8 +86,8 @@ export default function LoanCalculator() {
   // }, [loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsAdditionalEMI, inputsInterestRate]);
 
 
-  const schedules = useMemo(() => calculateAmortization(loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsPrepayment, inputsAdditionalEMI, inputsInterestRate, inputsInterestRate), [
-    loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsAdditionalEMI, inputsInterestRate
+  const schedules = useMemo(() => calculateAmortization(loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsPrepayment, inputsAdditionalEMI, inputsInterestRate, inputsInterestRate, startDate), [
+    loanAmount, tenure, interestRate, interestRateOD, inputsPrepayment, inputsAdditionalEMI, inputsInterestRate, startDate
   ]);
 
   return (<div className="flex flex-col items-center  print:items-start">
@@ -106,9 +111,10 @@ export default function LoanCalculator() {
         <Table >
           <TableHeader>
             <TableRow>
-              <TableHead className="text-right w/1/4">Loan Amount</TableHead>
-              <TableHead className="text-right w/1/4">Tenure</TableHead>
-              <TableHead className="text-right w/1/4">Rate</TableHead>
+              <TableHead className="text-right w-1/4">Loan Amount</TableHead>
+              <TableHead className="text-right w-1/4">Tenure</TableHead>
+              <TableHead className="text-right w-1/4">Rate</TableHead>
+              <TableHead className="text-right w-1/10">Start Date</TableHead>
 
             </TableRow>
           </TableHeader>
@@ -123,9 +129,11 @@ export default function LoanCalculator() {
               <TableCell>
                 <Input className="text-right " type="number" placeholder="Interest Rate (%)" value={interestRate} onChange={(e) => setInterestRate(e.target.valueAsNumber)} />
               </TableCell>
-              
+              <TableCell className="text-right">
+                <DatePicker date={startDate} setDate={(d) => setStartDate(d)} />
+              </TableCell>
             </TableRow>
-           
+
           </TableBody>
         </Table>
 
@@ -139,21 +147,23 @@ export default function LoanCalculator() {
       <section className="flex flex-col gap-2 ">
         <Label className="font-semibold mb-2">Amortization Table</Label>
 
-    
 
-        <Table className="border-collapse border">
-          <AmortizationTableHeader />
-          <TableBody>
-            {schedules.filter(a=>!!a.prepayment).map((schedule, idx) => {
-              const rate = getMapValue(inputsInterestRate, idx, interestRate);
-              const additionalEMI = getMapValue(inputsAdditionalEMI, idx, 0);
+        <ScrollOnDesktop className="xl:h-[calc(100lvh-36rem)] h-[calc(100lvh-37rem)] pr-1 border-y border-border rounded-md">
 
-              const prepayInput = inputsPrepayment.get(idx) || 0;
-              return <AmortizationTableRow key={idx} {...{ idx, rate, additionalEMI, prepayInput, schedule }} handleInputChange={handleInputChange} />
-            }
-            )}
-          </TableBody>
-        </Table>
+          <TableEx className="border-collapse border">
+            <AmortizationTableHeader />
+            <TableBody>
+              {schedules.filter(a => !!a.prepayment).map((schedule, idx) => {
+                const rate = getMapValue(inputsInterestRate, idx, interestRate);
+                const additionalEMI = getMapValue(inputsAdditionalEMI, idx, 0);
+
+                const prepayInput = inputsPrepayment.get(idx) || 0;
+                return <AmortizationTableRow key={idx} {...{ idx, rate, additionalEMI, prepayInput, schedule }} handleInputChange={handleInputChange} />
+              }
+              )}
+            </TableBody>
+          </TableEx>
+        </ScrollOnDesktop>
       </section>
 
 
@@ -177,7 +187,7 @@ const Summary = ({ schedules }: { schedules: Schedule[] }) => {
       </TableRow>
     </TableHeader>
     <TableBody>
-      {getSummaryRows(schedules).filter((a,i)=> i<=1).map((row, idx) => (
+      {getSummaryRows(schedules).filter((a, i) => i <= 1).map((row, idx) => (
         <TableRow key={idx}>
           <TableCell>{row.variation}</TableCell>
           <TableCell>{intl.format(row.totalPayments)}</TableCell>
@@ -202,17 +212,19 @@ type AmortizationTableRowProps = {
 
 
 
-  handleInputChange: (type: 'Prepayment' | 'AdditionalEMI' | 'InterestRate' , index: number, value: number) => void
+  handleInputChange: (type: 'Prepayment' | 'AdditionalEMI' | 'InterestRate', index: number, value: number) => void
 }
 const AmortizationTableHeader = () => {
-  return <TableHeader>
+  return <TableHeader className="sticky top-0 bg-accent border border-border">
     <TableRow className="border h-12" >
-      <TableHead className="border" >Month</TableHead>
+      <TableHead className="border w-4" >Month</TableHead>
+      <TableHead className="border w-8" >Date</TableHead>
+
       <TableHead className="text-right border" >EMI</TableHead>
       <TableHead className="text-right border w-24" ><span>Additional </span><br /><span>EMI</span></TableHead>
       <TableHead className="text-right border w-8">Rate</TableHead>
-     
-      
+
+
 
       {/* <TableHead className="text-right border">Opening Balance Principal</TableHead> */}
       <TableHead className="text-right border">Payment</TableHead>
@@ -223,7 +235,7 @@ const AmortizationTableHeader = () => {
       <TableHead className="text-right border"><span>Principal </span><br /><span>Component</span></TableHead>
       <TableHead className="text-right border"><span>Loan </span><br /><span>Balance</span></TableHead>
 
-     
+
     </TableRow>
   </TableHeader>
 }
@@ -237,6 +249,7 @@ const AmortizationTableRow = memo(({ idx, rate, additionalEMI, prepayInput, sche
 
   return <TableRow key={idx}>
     <TableCell className="border text-center">{normal?.month}</TableCell>
+    <TableCell className="border text-center  w-8">{normal?.date && format(normal?.date, "dd MMM yyy")}</TableCell>
     <TableCell className="border text-right">{normal ? intl.format(normal.emi) : null}</TableCell>
 
     <TableCell className="border" >
@@ -263,9 +276,9 @@ const AmortizationTableRow = memo(({ idx, rate, additionalEMI, prepayInput, sche
 
 
 
-   
 
-   
+
+
 
 
   </TableRow>

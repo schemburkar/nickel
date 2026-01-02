@@ -4,6 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "./date";
 import { Icons } from "@/components/icons";
+import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollAreaProps } from "@radix-ui/react-scroll-area";
 
 type RowProps = {
     row: {
@@ -36,3 +40,29 @@ export const Row = ({ row, setRow, canDelete, onDeleteRow }: RowProps) => {
         </TableCell>
     </TableRow>;
 };
+
+
+
+export function TableEx({ className, ...props }: React.ComponentProps<"table">) {
+  return (
+    // <div
+    //   data-slot="table-container"
+    //   className="relative w-full overflow-x-auto"
+    // >
+      <table
+        data-slot="table"
+        className={cn("w-full caption-bottom text-sm", className)}
+        {...props}
+      />
+    // </div>
+  )
+}
+export const ScrollOnDesktop = ({ children, className, ...props }: { children: React.ReactNode } & ScrollAreaProps ) => {
+  const isMobile = useIsMobile();
+  if (isMobile) {
+    return <>{children}</>;
+  }
+  return <ScrollArea className={className} {...props}>
+    {children}
+  </ScrollArea>;
+}

@@ -9,8 +9,9 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
+import { DayPickerProps } from "react-day-picker"
 
-export function DatePicker({ date, setDate }: { date: Date, setDate: (d: Date) => void }) {
+export function DatePicker({ date, setDate, ...props }: { date: Date, setDate: (d: Date) => void }& DayPickerProps ) {
 
     return (
         <Popover>
@@ -27,7 +28,7 @@ export function DatePicker({ date, setDate }: { date: Date, setDate: (d: Date) =
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
-                <Calendar locale={enIN}
+                <Calendar {...props} locale={enIN}
                     mode="single"
                     selected={date}
                     onSelect={setDate}

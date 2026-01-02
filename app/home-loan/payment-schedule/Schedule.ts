@@ -12,6 +12,7 @@ export type Schedule = {
 export type ScheduleItem = {
 
   month: number;
+  date: Date;
   emi: number;
 
   openingBalance: number
